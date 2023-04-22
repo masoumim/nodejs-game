@@ -86,19 +86,57 @@ updateGameBoard(row, col){
     }
     return holes;
    }
+
+   // Static method that will generate and return randomized field / gameboard
+   static generateField(rows, cols){
+    let gameBoard = new Array(rows);
+    
+    for(let i = 0; i < rows; i++){
+      gameBoard[i] = new Array(cols);
+      for(let j = 0; j < cols; j++){
+        // Randomize element (either hole or field)
+        let element = Math.floor(Math.random() * 101);
+    
+        // 25% Chance of generating a hole
+        if(element >= 75){
+          element = hole;
+          }
+        else{
+          // 75% chance of generating field
+        element = fieldCharacter;
+      }
+        gameBoard[i][j] = element;
+      }
+    }
+    // Set the fist element to be player
+    gameBoard[0][0] = pathCharacter;
+    // TODO: Set a random element to be the hat
+
+    return gameBoard;
+   }
 }
 
+// GAME LOGIC
 
-const field = new Field([
-  [pathCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
-  [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
-  [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
-  [fieldCharacter, fieldCharacter, hole, fieldCharacter, fieldCharacter, fieldCharacter],
-  [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
-  [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, hat]
-  ]);
 
-  field.print();
+
+// Generate randomized field
+// TODO: Generate random value for cols and rows to pass into the generateField method...
+let generatedGameBoard = Field.generateField(4,3);
+
+// Initialize new field object using generated field
+const field = new Field(generatedGameBoard);
+
+// const field = new Field([
+//   [pathCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
+//   [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
+//   [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
+//   [fieldCharacter, fieldCharacter, hole, fieldCharacter, fieldCharacter, fieldCharacter],
+//   [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
+//   [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, hat]
+//   ]);
+
+field.print();
 
 // START GAME LOOP HERE
 let gameOver = false;
