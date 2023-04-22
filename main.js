@@ -73,6 +73,19 @@ updateGameBoard(row, col){
   }
   return false;
  }
+
+  // Returns the number of holes on the gameboard
+  holeCount(){
+    let holes = 0;
+    for(let i = 0; i < this._gameBoard.length; i++){
+      for(let j = 0; j < this._gameBoard[i].length; j++){
+        if(this._gameBoard[i][j] === 'O'){
+          holes++;
+        }
+      }
+    }
+    return holes;
+   }
 }
 
 
@@ -80,7 +93,7 @@ const field = new Field([
   [pathCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
   [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
   [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
-  [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
+  [fieldCharacter, fieldCharacter, hole, fieldCharacter, fieldCharacter, fieldCharacter],
   [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter],
   [fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, fieldCharacter, hat]
   ]);
@@ -89,12 +102,14 @@ const field = new Field([
 
 // START GAME LOOP HERE
 let gameOver = false;
+let startingHoles = field.holeCount();
 
 while(!gameOver){
+
 // Get user input
 let input = prompt('Which way would you like to move? ');
 
-// Move player (use switch statement here later):
+// Move player:
 
 // DOWN
 if(input === 'd'){
@@ -133,14 +148,17 @@ else if(input === 'u'){
   }
 }
 
-
-
 // Update field
 field.updateGameBoard(field.playerPositionRow, field.playerPositionCol);
 
 // re-draw the field
 field.print();
 
+// Check hole count
+if(field.holeCount() < startingHoles){
+  console.log('You fell in a hole!');
+  gameOver = true;
+}
 
 // Check victory
 let victory = field.checkHat()
