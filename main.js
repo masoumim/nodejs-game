@@ -61,6 +61,18 @@ updateGameBoard(row, col){
  moveRight(){
   this._playerPositionCol += 1;
  }
+
+ // Checks for existence of '^' in the game board
+ checkHat(){
+  for(let i = 0; i < this._gameBoard.length; i++){
+    for(let j = 0; j < this._gameBoard[i].length; j++){
+      if(this._gameBoard[i][j] === '^'){
+        return true;
+      }
+    }
+  }
+  return false;
+ }
 }
 
 
@@ -121,11 +133,21 @@ else if(input === 'u'){
   }
 }
 
+
+
 // Update field
 field.updateGameBoard(field.playerPositionRow, field.playerPositionCol);
 
 // re-draw the field
 field.print();
+
+
+// Check victory
+let victory = field.checkHat()
+if(!victory){
+  console.log('You Win!');
+  gameOver = true;
+}
 
 // END GAME LOOP
 }
