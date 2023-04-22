@@ -15,7 +15,7 @@ class Field {
   // Prints out the game board
   print(){
   // Clear the board first
-  process.stdout.write("\u001b[2J\u001b[0;0H");
+  // process.stdout.write("\u001b[2J\u001b[0;0H");
 
   // Print game board
   for(let i = 0; i < this._gameBoard.length; i++){
@@ -31,15 +31,35 @@ get playerPositionCol(){
   return this._playerPositionCol;
 }
 
-  // Updates the field
-   updateGameBoard(row, col){
-    this._gameBoard[row][col] = pathCharacter;
+get gameBoardCols(){
+  return this._gameBoard[0].length;
+}
+
+get gameBoardRows(){
+  return this._gameBoard.length;
+}
+
+
+// Updates the field
+updateGameBoard(row, col){
+  this._gameBoard[row][col] = pathCharacter;
+}
+
+  // Movement
+ moveDown(){ 
+  this._playerPositionRow += 1;
+ }
+
+ moveUp(){
+  this._playerPositionRow -= 1;
   }
 
+ moveLeft(){
+  this._playerPositionCol -= 1;
+ }
 
- moveDown(){
-   console.log('move down called!');
-   this._playerPositionRow += 1;
+ moveRight(){
+  this._playerPositionCol += 1;
  }
 }
 
@@ -56,13 +76,49 @@ const field = new Field([
   field.print();
 
 // START GAME LOOP HERE
+let gameOver = false;
 
+while(!gameOver){
 // Get user input
 let input = prompt('Which way would you like to move? ');
 
-// Move player (use switch statement here)
+// Move player (use switch statement here later):
+
+// DOWN
 if(input === 'd'){
-  field.moveDown();
+  if(field.playerPositionRow < field.gameBoardRows - 1){
+    field.moveDown();
+  }
+  else{
+    gameOver = true;
+  }  
+}
+// LEFT
+else if(input === 'l'){
+  if(field.playerPositionCol > 0){
+    field.moveLeft();
+  }
+  else{
+    gameOver = true;
+  }
+}
+// RIGHT
+else if(input === 'r'){
+  if(field.playerPositionCol < field.gameBoardCols - 1){
+    field.moveRight();
+  }
+  else{
+    gameOver = true;
+  }
+}
+// UP
+else if(input === 'u'){
+  if(field.playerPositionRow > 0){
+    field.moveUp();
+  }
+  else{
+    gameOver = true;
+  }
 }
 
 // Update field
@@ -72,8 +128,6 @@ field.updateGameBoard(field.playerPositionRow, field.playerPositionCol);
 field.print();
 
 // END GAME LOOP
+}
 
-console.log('hello');
-
-// test change I am a test
-// I am another test
+console.log('Game Over!');
